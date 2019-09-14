@@ -6,7 +6,7 @@ import javax.swing.JFrame;
 import tela.EvaInSpace;
 
 public class JogoProjeto {
-
+    //hallyegay
     //Biblioteca do JAVA para "pegar" a dimensão do monitor do usuário
     //monitorPc sempre será chamada quando algo for colocado na tela
     public static DisplayMode monitorPc = GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice().getDisplayMode();
