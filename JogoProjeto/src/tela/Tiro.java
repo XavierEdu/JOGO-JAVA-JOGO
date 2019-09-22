@@ -1,5 +1,7 @@
 package tela;
 
+import classesauxiliares.functions;
+
 import java.awt.Color;
 import java.awt.Graphics2D;
 
@@ -24,11 +26,12 @@ public class Tiro {
     public void paint(Graphics2D g) {
         g.setColor(Color.ORANGE);
         g.fillRect(x, y, tamX, tamY);
+
     }
 
     // Movimentação do tiro
     public void atualizar() {
-        y -= velocidadeTiro;
+        y -= Math.round(functions.yxplusy(y,0).getX()); //AQUI
     }
 
     // Retorna um boolean caso o tiro já tenha saído da tela
