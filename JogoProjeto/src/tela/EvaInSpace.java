@@ -18,7 +18,7 @@ import classesauxiliares.distancia;
 import jogoprojeto.JogoProjeto;
 
 public class EvaInSpace extends JPanel implements Runnable, KeyListener {
-
+   //ss
     // Atributos do jogo
     private Eva01 eva01; // Objeto do jogador
     private int direcao; // Direção de movimento do jogador
