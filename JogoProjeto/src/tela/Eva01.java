@@ -5,12 +5,16 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import javax.imageio.ImageIO;
-import jogoprojeto.JogoProjeto;
 
 public class Eva01 {
 
     // Atributos do jogador
     BufferedImage spriteEva;
+
+    public int getX() {
+        return x;
+    }
+
     private int x;
     private int velocidade;
     private boolean podeAtirar;
@@ -35,7 +39,7 @@ public class Eva01 {
     // Método para pintar o jogador na tela
     public void paint(Graphics2D g) {
 
-        g.drawImage(spriteEva, x, JogoProjeto.monitorPc.getHeight() - 160, x + 60, JogoProjeto.monitorPc.getHeight() - 160 + 70, 0, 0, spriteEva.getWidth(), spriteEva.getHeight(), null);
+        g.drawImage(spriteEva, x, 780 - 160, x + 60, 780 - 160 + 60, 0, 0, spriteEva.getWidth(), spriteEva.getHeight(), null);
 
     }
 
@@ -47,7 +51,7 @@ public class Eva01 {
 
         recarregar = 0;
 
-        Tiro novoTiro = new Tiro(x + 29, JogoProjeto.monitorPc.getHeight() - 160);
+        Tiro novoTiro = new Tiro(x + 29, 770 - 160);
 
         return novoTiro;
 

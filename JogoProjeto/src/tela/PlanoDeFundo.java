@@ -5,7 +5,6 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import javax.imageio.ImageIO;
-import jogoprojeto.JogoProjeto;
 
 public class PlanoDeFundo {
 
@@ -29,7 +28,7 @@ public class PlanoDeFundo {
     // OBS: não está funcionando bem
     public void paint(Graphics2D g) {
 
-        int altura = JogoProjeto.monitorPc.getHeight();
+        int altura = 720;
 
         g.drawImage(imagem, 0, y - altura * 2, imagem.getWidth(), imagem.getHeight(), null);
         g.drawImage(imagem, 0, y, imagem.getWidth(), -imagem.getHeight(), null);

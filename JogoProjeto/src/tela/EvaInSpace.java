@@ -13,6 +13,8 @@ import java.io.IOException;
 import java.util.ArrayList;
 import javax.imageio.ImageIO;
 import javax.swing.JPanel;
+
+import classesauxiliares.distancia;
 import jogoprojeto.JogoProjeto;
 
 public class EvaInSpace extends JPanel implements Runnable, KeyListener {
@@ -30,7 +32,21 @@ public class EvaInSpace extends JPanel implements Runnable, KeyListener {
     private BufferedImage imagemExp; // Carregar a imagem da explosão
     private float tempoFechar = 10; // O tempo que o jogo ficará aberto até que feche autormaticamente
     String easter = null; // Easter egg
+    int angulo  =180;
 
+    public int anguloParaCoordenadas (int angulo){ //angulo -> diferença etnre a posição final e a posicao inicial
+        if(angulo == 90){
+            return 0;
+        }else{
+            try {
+                return (int) (15 / Math.round(Math.tan(angulo)));
+            }
+            catch(Exception e){
+                return 0;
+                //se tentar dividir por 0
+            }
+        }
+    }
     public EvaInSpace() {
         ganhou = false;
 
@@ -60,9 +76,10 @@ public class EvaInSpace extends JPanel implements Runnable, KeyListener {
         }
 
         // Lógica utilizada para spawnar os inimigos em fileiras
-        for (int i = 0; i < 80; i++) {
+        for (int i = 0; i < 60; i++) {
             angels.add(new Angel(spriteAngel, 50 + (i % 20) * 60, 17 + (i / 20) * 60, 1));
         }
+
 
         Thread repeatJogo = new Thread(this); // Thread que irá rodar o jogo
 
@@ -74,6 +91,7 @@ public class EvaInSpace extends JPanel implements Runnable, KeyListener {
 
         // Neste método chamamos os métodos repaint() e update() responsáveis por estarem atualizando o jogo
         while (true) {
+
             long tempoInicio = System.currentTimeMillis();
 
             update();
@@ -101,10 +119,10 @@ public class EvaInSpace extends JPanel implements Runnable, KeyListener {
         eva01.movimenta(direcao); // Vai movimentar de acordo com o valor de direção, atribuido nos métodos de KeyPressed
 
         for (int i = 0; i < angels.size(); i++) {
-            angels.get(i).atualizar(); // Movimentação do inimigo
+            //angels.get(i).atualizar(); // Movimentação do inimigo
 
             // Quando os inimigos atingirem certa posição na tela, o jogador perde o jogo
-            if (angels.get(i).getY() >= JogoProjeto.monitorPc.getHeight() - 125) {
+            if (angels.get(i).getY() >= 720 - 125) {
                 perder = true;
             }
 
@@ -145,7 +163,7 @@ public class EvaInSpace extends JPanel implements Runnable, KeyListener {
 
         // Aqui, o inimigo irá trocar a direção de sua movimentação
         for (int i = 0; i < angels.size(); i++) {
-            if (angels.get(i).getX() <= 0 || angels.get(i).getX() >= JogoProjeto.monitorPc.getWidth() - 53) {
+            if (angels.get(i).getX() <= 0 || angels.get(i).getX() >= 1280 - 53) {
                 for (int j = 0; j < angels.size(); j++) {
                     angels.get(j).trocaDirecao();
                 }
@@ -207,7 +225,7 @@ public class EvaInSpace extends JPanel implements Runnable, KeyListener {
             g.setColor(Color.white); // Colocando cor do texto como branco
             g.setFont(fonte); // Setando a fonte
 
-            g.drawString("YOU WIN!! FECHANDO EM: " + tempoFechar, (JogoProjeto.monitorPc.getWidth() / 2) - 165, JogoProjeto.monitorPc.getHeight() / 2);
+            g.drawString("YOU WIN!! FECHANDO EM: " + tempoFechar, (1280 / 2) - 165, 720 / 2);
 
             tempoFechar -= 0.01666f;
 
@@ -222,7 +240,7 @@ public class EvaInSpace extends JPanel implements Runnable, KeyListener {
             g.setColor(Color.white); // Colocando cor do texto como branco
             g.setFont(fonte); // Setando a fonte
 
-            g.drawString("VOCÊ É HORRÍVEL!!  FECHANDO EM: " + tempoFechar, (JogoProjeto.monitorPc.getWidth() / 2) - 180, JogoProjeto.monitorPc.getHeight() / 2);
+            g.drawString("VOCÊ É HORRÍVEL!!  FECHANDO EM: " + tempoFechar, (1280 / 2) - 180, 720 / 2);
 
             tempoFechar -= 0.01666f;
 
@@ -261,7 +279,9 @@ public class EvaInSpace extends JPanel implements Runnable, KeyListener {
         }
 
         if (e.getKeyCode() == KeyEvent.VK_SPACE && eva01.podeAtirar()) {
-            tiros.add(eva01.atirar());
+            Tiro aux = eva01.atirar();
+            aux.setDistancia(anguloParaCoordenadas(angulo));
+            tiros.add(aux);
 
             eva01.podeAtirar();
         }

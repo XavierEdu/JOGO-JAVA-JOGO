@@ -1,7 +1,5 @@
 package tela;
 
-import classesauxiliares.functions;
-
 import java.awt.Color;
 import java.awt.Graphics2D;
 
@@ -14,6 +12,13 @@ public class Tiro {
     private int tamX = 4;
     private int tamY = 15;
 
+    public void setDistancia(int distancia) {
+        this.distancia = distancia;
+    }
+
+    int distancia = 0;
+    int distanciAtual =0;
+    //o tiro anda a 10tiles, o jogo tem 720tiles, sendo  assim em  72ticks o tiro chegará ate o final
     // O construtor irá receber os valores iniciais de X e Y, que é onde o personagem está, aproximadamente
     public Tiro(int inicioX, int inicioY) {
         this.x = inicioX;
@@ -25,13 +30,21 @@ public class Tiro {
     // Fazendo o projétil com um retângulizinho
     public void paint(Graphics2D g) {
         g.setColor(Color.ORANGE);
-        g.fillRect(x, y, tamX, tamY);
 
+        g.fillRect(x, y, tamX, tamY);
     }
 
     // Movimentação do tiro
     public void atualizar() {
-        y -= Math.round(functions.yxplusy(y,0).getX()); //AQUI
+        distanciAtual+=10;
+        y -= velocidadeTiro;
+        try {
+            x += distanciAtual / distancia;
+        }catch(Exception e){
+            x+=0;
+            //angulo 90 =dividir por 0
+        }
+
     }
 
     // Retorna um boolean caso o tiro já tenha saído da tela
