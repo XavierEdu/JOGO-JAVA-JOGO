@@ -14,12 +14,9 @@ import java.util.ArrayList;
 import javax.imageio.ImageIO;
 import javax.swing.JPanel;
 
-import classesauxiliares.distancia;
-import jogoprojeto.JogoProjeto;
-
 public class EvaInSpace extends JPanel implements Runnable, KeyListener {
-   //ss
     // Atributos do jogo
+
     private Eva01 eva01; // Objeto do jogador
     private int direcao; // Direção de movimento do jogador
     private ArrayList<Tiro> tiros; // Array de projeteis
@@ -30,23 +27,10 @@ public class EvaInSpace extends JPanel implements Runnable, KeyListener {
     private boolean perder; // Boolean responsável pela derrota
     private Font fonte = new Font("TimesRoman", Font.BOLD, 20); // Fonte que irá aparecer g.drawString
     private BufferedImage imagemExp; // Carregar a imagem da explosão
-    private float tempoFechar = 10; // O tempo que o jogo ficará aberto até que feche autormaticamente
+    private float tempoFechar = 5; // O tempo que o jogo ficará aberto até que feche autormaticamente
     String easter = null; // Easter egg
-    int angulo  =180;
+    int angulo = 90;
 
-    public int anguloParaCoordenadas (int angulo){ //angulo -> diferença etnre a posição final e a posicao inicial
-        if(angulo == 90){
-            return 0;
-        }else{
-            try {
-                return (int) (15 / Math.round(Math.tan(angulo)));
-            }
-            catch(Exception e){
-                return 0;
-                //se tentar dividir por 0
-            }
-        }
-    }
     public EvaInSpace() {
         ganhou = false;
 
@@ -79,7 +63,6 @@ public class EvaInSpace extends JPanel implements Runnable, KeyListener {
         for (int i = 0; i < 60; i++) {
             angels.add(new Angel(spriteAngel, 50 + (i % 20) * 60, 17 + (i / 20) * 60, 1));
         }
-
 
         Thread repeatJogo = new Thread(this); // Thread que irá rodar o jogo
 
@@ -119,7 +102,7 @@ public class EvaInSpace extends JPanel implements Runnable, KeyListener {
         eva01.movimenta(direcao); // Vai movimentar de acordo com o valor de direção, atribuido nos métodos de KeyPressed
 
         for (int i = 0; i < angels.size(); i++) {
-            //angels.get(i).atualizar(); // Movimentação do inimigo
+            angels.get(i).atualizar(); // Movimentação do inimigo
 
             // Quando os inimigos atingirem certa posição na tela, o jogador perde o jogo
             if (angels.get(i).getY() >= 720 - 125) {
@@ -203,6 +186,10 @@ public class EvaInSpace extends JPanel implements Runnable, KeyListener {
 
         eva01.paint(g); // Pintar jogador
 
+        g.setColor(Color.GREEN);
+        g.setFont(fonte);
+        g.drawString("ÂNGULO: " + angulo + "°", (1280 / 2) - 620, 720 / 2 + 300);
+
         // Pintando os inimigos
         for (int i = 0; i < angels.size(); i++) {
             angels.get(i).paint(g);
@@ -279,11 +266,26 @@ public class EvaInSpace extends JPanel implements Runnable, KeyListener {
         }
 
         if (e.getKeyCode() == KeyEvent.VK_SPACE && eva01.podeAtirar()) {
-            Tiro aux = eva01.atirar();
-            aux.setDistancia(anguloParaCoordenadas(angulo));
+            Tiro aux = eva01.atirar(angulo);
             tiros.add(aux);
 
             eva01.podeAtirar();
+        }
+
+        if (e.getKeyCode() == KeyEvent.VK_LEFT) {
+            angulo += 15;
+
+            if (angulo > 135) {
+                angulo = 135;
+            }
+        }
+
+        if (e.getKeyCode() == KeyEvent.VK_RIGHT) {
+            angulo -= 15;
+
+            if (angulo < 45) {
+                angulo = 45;
+            }
         }
 
         // Easter Egg

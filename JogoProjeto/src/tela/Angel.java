@@ -38,7 +38,7 @@ public class Angel {
 
         y += 10;
 
-        velocidade += 0.15f; // Sempre que o inimigo troca de direção ele fica mais rápido. OBS: não tá funcionando bem
+        velocidade += 0.13f; // Sempre que o inimigo troca de direção ele fica mais rápido. OBS: não tá funcionando bem
 
     }
 

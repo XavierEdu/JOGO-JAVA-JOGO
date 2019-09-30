@@ -44,14 +44,14 @@ public class Eva01 {
     }
 
     // Método para realizar disparo
-    public Tiro atirar() {
+    public Tiro atirar(int angulo) {
 
         // Depois que o jogador realiza um tiro, o atributo podeAtirar se torna falso até que se passem 13 frames
         podeAtirar = false;
 
         recarregar = 0;
 
-        Tiro novoTiro = new Tiro(x + 29, 770 - 160);
+        Tiro novoTiro = new Tiro(x + 29, 770 - 160, angulo);
 
         return novoTiro;
 
@@ -65,6 +65,14 @@ public class Eva01 {
             x += velocidade;
         } else if (valor == -1) {
             x -= velocidade;
+        }
+
+        // Limite de tela
+        if (x <= 0) {
+            x = 0;
+        }
+        if (x >= 1210) {
+            x = 1210;
         }
 
         //Verificação para ver se o personagem já pode atirar novamente, isso limita seus tiros
