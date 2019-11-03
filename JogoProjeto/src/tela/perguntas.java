@@ -1,6 +1,7 @@
 package tela;
 
 import javax.swing.*;
+import java.awt.*;
 import java.awt.event.*;
 import java.util.ArrayList;
 import java.util.Random;
@@ -106,6 +107,7 @@ public class perguntas extends JDialog {
     }
 
     public void iniciar(){
+        this.setPreferredSize(new Dimension(640,480));
         System.out.println("entrou");
         ArrayList<Pergunta> alPergunta = new ArrayList<Pergunta>();
         alPergunta.add(new Pergunta("pergunta 1", "1", "2", "3", "4", 3));
@@ -123,6 +125,7 @@ public class perguntas extends JDialog {
 
         this.pack();
         this.setVisible(true);
+
     }
     public static long getRandomIntegerBetweenRange(double min, double max){
         long x = Math.round(Math.random()*((max-min)+1)+min);

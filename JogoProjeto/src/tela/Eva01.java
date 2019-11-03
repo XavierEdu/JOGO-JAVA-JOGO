@@ -22,12 +22,8 @@ public class Eva01 {
 
     // Carregar imagem do personagem
     public Eva01() {
-        try {
-            spriteEva = ImageIO.read(new File("sprites/EVA01/9.png"));
-        } catch (IOException e) {
-            System.out.println("Não foi possível");
-            e.printStackTrace();
-        }
+        spriteEva = loadImage("/sprites/EVA01/9.png");
+
 
         x = 590;
         velocidade = 3;
@@ -35,7 +31,18 @@ public class Eva01 {
         recarregar = 0;
 
     }
+    public BufferedImage loadImage(String fileName){
 
+        BufferedImage buff = null;
+        try {
+            buff = ImageIO.read(getClass().getResourceAsStream(fileName));
+        } catch (IOException e) {
+            System.out.println("fudeu1");
+            e.printStackTrace();
+        }
+        return buff;
+
+    }
     // Método para pintar o jogador na tela
     public void paint(Graphics2D g) {
 

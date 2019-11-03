@@ -14,7 +14,7 @@ import java.sql.Time;
 import java.util.ArrayList;
 import java.util.Timer;
 import javax.imageio.ImageIO;
-import javax.swing.JPanel;
+import javax.swing.*;
 
 public class EvaInSpace extends JPanel implements Runnable, KeyListener {
     // Atributos do jogo
@@ -59,13 +59,9 @@ public class EvaInSpace extends JPanel implements Runnable, KeyListener {
         // Neste caso, a imagem do inimigo está sendo carregada nesta classe,
         // pois como o número de inimigos é grande, é melhor deixar com que o jogo já tenha
         // a imagem carregada para que toda vez a classe Angel não tenha que gerar
-        try {
-            spriteAngel = ImageIO.read(new File("sprites/inimigos/Angel03/0.png"));
-            imagemExp = ImageIO.read(new File("sprites/explosao.png"));
-        } catch (IOException e) {
-            System.out.println("Não foi possível");
-            e.printStackTrace();
-        }
+            spriteAngel = loadImage("/sprites/inimigos/Angel03/0.png");
+            imagemExp = loadImage("/sprites/explosao.png");
+
 
         // Lógica utilizada para spawnar os inimigos em fileiras
         for (int i = 0; i < 60; i++) {
@@ -77,9 +73,23 @@ public class EvaInSpace extends JPanel implements Runnable, KeyListener {
         repeatJogo.start();
     }
 
+
+
+    public BufferedImage loadImage(String fileName){
+
+        BufferedImage buff = null;
+        try {
+            buff = ImageIO.read(getClass().getResourceAsStream(fileName));
+        } catch (IOException e) {
+            System.out.println("fudeu");
+            e.printStackTrace();
+        }
+        return buff;
+
+    }
+
     @Override
     public void run() {
-
         // Neste método chamamos os métodos repaint() e update() responsáveis por estarem atualizando o jogo
         while (true) {
 
@@ -343,7 +353,7 @@ public class EvaInSpace extends JPanel implements Runnable, KeyListener {
             }
         }
 
-        // Easter Egg
+        /* Easter Egg
         if (e.getKeyCode() == KeyEvent.VK_X) {
             easter = "X";
         }
@@ -378,6 +388,7 @@ public class EvaInSpace extends JPanel implements Runnable, KeyListener {
 
             ganhou = true;
         }
+         */
 
     }
 

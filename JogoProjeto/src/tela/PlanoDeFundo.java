@@ -14,14 +14,20 @@ public class PlanoDeFundo {
     public PlanoDeFundo() {
 
         // Carregando plano de fundo
+        this.imagem =loadImage("/sprites/fundo.png");
+        y = 0;
+    }
+    public BufferedImage loadImage(String fileName){
+
+        BufferedImage buff = null;
         try {
-            imagem = ImageIO.read(new File("sprites/fundo.png"));
+            buff = ImageIO.read(getClass().getResourceAsStream(fileName));
         } catch (IOException e) {
-            System.out.println("Não foi possível");
+            System.out.println("fudeu1");
             e.printStackTrace();
         }
+        return buff;
 
-        y = 0;
     }
 
     // (Gambiarra) colocando imagem na tela para que ela se repita
