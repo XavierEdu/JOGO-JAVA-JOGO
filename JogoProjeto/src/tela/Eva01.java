@@ -29,7 +29,7 @@ public class Eva01 {
             e.printStackTrace();
         }
 
-        x = 650;
+        x = 590;
         velocidade = 3;
         podeAtirar = true; // O atributo podeAtirar começa verdadeiro
         recarregar = 0;
@@ -51,7 +51,7 @@ public class Eva01 {
 
         recarregar = 0;
 
-        Tiro novoTiro = new Tiro(x + 29, 770 - 160, angulo);
+        Tiro novoTiro = new Tiro(x + 29, 780 - 160, angulo);
 
         return novoTiro;
 

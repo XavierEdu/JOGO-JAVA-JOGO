@@ -10,7 +10,9 @@ import java.awt.event.KeyListener;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.sql.Time;
 import java.util.ArrayList;
+import java.util.Timer;
 import javax.imageio.ImageIO;
 import javax.swing.JPanel;
 
@@ -28,9 +30,17 @@ public class EvaInSpace extends JPanel implements Runnable, KeyListener {
     private Font fonte = new Font("TimesRoman", Font.BOLD, 20); // Fonte que irá aparecer g.drawString
     private BufferedImage imagemExp; // Carregar a imagem da explosão
     private float tempoFechar = 5; // O tempo que o jogo ficará aberto até que feche autormaticamente
+
     String easter = null; // Easter egg
     int angulo = 90;
-
+    int score = 0; //score
+    int vida = 2; //vidas
+    long lastTime = System.currentTimeMillis();
+    long tempoDecorrido = 0;
+    int inimigosMortos = 0;
+    public boolean taQuaseMorrendo = false;
+    public static boolean acertou = false;
+    BufferedImage spriteAngel = null; //sprite do inimigo
     public EvaInSpace() {
         ganhou = false;
 
@@ -45,8 +55,6 @@ public class EvaInSpace extends JPanel implements Runnable, KeyListener {
         angels = new ArrayList<Angel>();
 
         explosao = new ArrayList<Explosao>();
-
-        BufferedImage spriteAngel = null;
 
         // Neste caso, a imagem do inimigo está sendo carregada nesta classe,
         // pois como o número de inimigos é grande, é melhor deixar com que o jogo já tenha
@@ -65,7 +73,7 @@ public class EvaInSpace extends JPanel implements Runnable, KeyListener {
         }
 
         Thread repeatJogo = new Thread(this); // Thread que irá rodar o jogo
-
+        lastTime = System.nanoTime();
         repeatJogo.start();
     }
 
@@ -82,9 +90,16 @@ public class EvaInSpace extends JPanel implements Runnable, KeyListener {
             repaint();
 
             long tempoFinal = System.currentTimeMillis();
-
+            //deltatime = lastTime - (System.nanoTime() - lastTime);
+            tempoDecorrido = System.nanoTime() - lastTime;
+            tempoDecorrido = tempoDecorrido/1000000000;
             long diferenca = 16 - (tempoFinal - tempoInicio); // Isto fará com o que o jogo mantenha
-
+            //System.out.println(tempoDecorrido*0.000000001);
+            try {
+                score = Math.toIntExact((inimigosMortos * (1000 / tempoDecorrido)));
+            }catch(Exception e ){
+                //gambiarra fodase ( nos primeiros minutos vai dividir por zero fodase)
+            }
             if (diferenca > 0) {
                 dormir(diferenca); // Ele irá dormir a diferença para garantir que o jogo rode da mesma maneira em outros computadores
             }
@@ -106,7 +121,30 @@ public class EvaInSpace extends JPanel implements Runnable, KeyListener {
 
             // Quando os inimigos atingirem certa posição na tela, o jogador perde o jogo
             if (angels.get(i).getY() >= 720 - 125) {
-                perder = true;
+
+                vida--;
+                if(vida ==0&&taQuaseMorrendo==false){
+                    perguntas pergunta = new perguntas();
+                    pergunta.iniciar();
+                    if(acertou == true){
+                        System.out.println("yareyare");
+                        taQuaseMorrendo=true;
+                        vida++;
+                    }else{
+                        System.out.println("zipzopperdi");
+                        perder = true;
+                    }
+                }
+                if(taQuaseMorrendo==true&& vida == 0) {
+                    perder = true;
+                }
+                else{
+                    //resetar o arraylist de inimigos
+                    angels = new ArrayList<Angel>();
+                    for (int j = 0; j < 60; j++) {
+                        angels.add(new Angel(spriteAngel, 50 + (j % 20) * 60, 17 + (j / 20) * 60, 1));
+                    }
+                }
             }
 
         }
@@ -129,6 +167,8 @@ public class EvaInSpace extends JPanel implements Runnable, KeyListener {
                         explosao.add(new Explosao(imagemExp, angels.get(j).getX(), angels.get(j).getY()));
 
                         angels.remove(j);
+
+                        inimigosMortos++;
 
                         j--;
 
@@ -190,6 +230,11 @@ public class EvaInSpace extends JPanel implements Runnable, KeyListener {
         g.setFont(fonte);
         g.drawString("ÂNGULO: " + angulo + "°", (1280 / 2) - 620, 720 / 2 + 300);
 
+
+
+        g.drawString("SCORE: " + score, (1280-200) , (720-300) );
+
+        g.drawString("VIDAS: " + vida, (1280 / 2) - 620 , 40);
         // Pintando os inimigos
         for (int i = 0; i < angels.size(); i++) {
             angels.get(i).paint(g);
@@ -227,7 +272,7 @@ public class EvaInSpace extends JPanel implements Runnable, KeyListener {
             g.setColor(Color.white); // Colocando cor do texto como branco
             g.setFont(fonte); // Setando a fonte
 
-            g.drawString("VOCÊ É HORRÍVEL!!  FECHANDO EM: " + tempoFechar, (1280 / 2) - 180, 720 / 2);
+            g.drawString("VOCÊ É HORRÍVEL!! FECHANDO EM: " + tempoFechar, (1280 / 2) - 180, 720 / 2);
 
             tempoFechar -= 0.01666f;
 
@@ -285,6 +330,16 @@ public class EvaInSpace extends JPanel implements Runnable, KeyListener {
 
             if (angulo < 45) {
                 angulo = 45;
+            }
+        }
+        if(e.getKeyCode() == KeyEvent.VK_O){
+            perguntas pergunta1 = new perguntas();
+            pergunta1.iniciar();
+            if(acertou == true){
+                System.out.println("yareyare");
+
+            }else{
+                System.out.println("zipzopperdi");
             }
         }
 

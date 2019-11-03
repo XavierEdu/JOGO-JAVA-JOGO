@@ -7,7 +7,6 @@ public class JogoProjeto {
 
     public static void main(String[] args) {
 
-        //Criação da tela
         JFrame tela = new JFrame("Eva In Space");
 
         tela.setSize(1280, 720);
@@ -24,7 +23,7 @@ public class JogoProjeto {
         tela.addKeyListener(eva);
 
         tela.setVisible(true);
-
+      
     }
 
 }

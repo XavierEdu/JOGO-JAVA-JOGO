@@ -36,9 +36,9 @@ public class Angel {
     public void trocaDirecao() {
         direcao = direcao * -1;
 
-        y += 10;
+        y += 15;
 
-        velocidade += 0.13f; // Sempre que o inimigo troca de direção ele fica mais rápido. OBS: não tá funcionando bem
+        velocidade += 0.15f; // Sempre que o inimigo troca de direção ele fica mais rápido. OBS: não tá funcionando bem
 
     }
 
